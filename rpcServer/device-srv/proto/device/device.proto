@@ -1,0 +1,256 @@
+syntax = "proto3";
+
+service Device {
+	// beacon
+	rpc AddBeacon(AddBeaconRequest) returns (AddBeaconResponse) {}
+	rpc DeleteBeacon(DeleteBeaconRequest) returns (DeleteBeaconResponse) {}
+	rpc ReadOneBeacon(ReadOneBeaconRequest) returns (ReadOneBeaconResponse) {}
+	rpc ReadAllBeacon(ReadAllBeaconRequest) returns (ReadAllBeaconResponse) {}
+	rpc ReadPagingBeacon(ReadPagingBeaconRequest) returns (ReadPagingBeaconResponse) {}
+	rpc UpdateBeacon(UpdateBeaconRequest) returns (UpdateBeaconResponse) {}
+    rpc UpdateBeaconApplyStatus(UpdateBeaconApplyStatusRequest) returns (UpdateBeaconApplyStatusResponse) {}
+
+    // gateway
+    rpc AddGateway(AddGatewayRequest) returns (AddGatewayResponse) {}
+    rpc ReadOneGateway(ReadOneGatewayRequest) returns (ReadOneGatewayResponse) {}
+    rpc ReadAllGateway(ReadAllGatewayRequest) returns (ReadAllGatewayResponse) {}
+    rpc ReadPagingGateway(ReadPagingGatewayRequest) returns (ReadPagingGatewayResponse) {}
+    rpc DeleteGateway(DeleteGatewayRequest) returns (DeleteGatewayResponse) {}
+    rpc UpdateGateway(UpdateGatewayRequest) returns (UpdateGatewayResponse) {}
+    rpc UpdateGatewayStatus(UpdateGatewayStatusRequest) returns (UpdateGatewayStatusResponse) {}
+
+    // beacon setting
+    rpc AddBeaconSetting(AddBeaconSettingRequest) returns (AddBeaconSettingResponse) {}
+    rpc ReadBeaconSetting(ReadBeaconSettingRequest) returns (ReadBeaconSettingResponse) {}
+    rpc ReadBeaconSetByObjectIdAndVersion(ReadBeaconSetByObjectIdAndVersionRequest) returns (ReadBeaconSetByObjectIdAndVersionResponse) {}
+    rpc UpdateBeaconApplyVersion(UpdateBeaconApplyVersionRequest) returns (UpdateBeaconApplyVersionResponse) {}
+
+    rpc InitDB(InitDBRequest) returns (InitDBResponse) {}
+
+}
+
+message Result {
+	string id     = 1;
+    int32 code    = 2;
+	string detail = 3;
+	string status = 4;
+}
+// >>>>>>>>>>>>>> Init DB >>>>>>>>>>>>>>>>>>>>>>>>
+message InitDBRequest {
+    string database_url = 1;
+}
+message InitDBResponse {
+    Result result = 1;
+}
+
+// >>>>>>>>>>>>>> Beacon Setting Begin >>>>>>>>>>>
+message BeaconSetting {
+    int32 id = 1;
+    string object_id = 2;
+    string mac = 3;
+    int32 version = 4;
+    int32 apply_status = 5;
+    string setting = 6;
+    int64 create_at = 7;
+    int64 apply_at = 8;
+}
+// UpdateBeaconApplyVersionRequest
+message UpdateBeaconApplyVersionRequest {
+    string database_url = 1;
+    string object_id = 2;
+    int32 version = 3;
+}
+message UpdateBeaconApplyVersionResponse {
+    Result result = 1;
+}
+// AddBeaconSetting
+message AddBeaconSettingRequest {
+    string database_url = 1;
+    BeaconSetting beaconSetting = 2;
+}
+message AddBeaconSettingResponse {
+    Result result = 1;
+}
+// ReadBeaconSetByObject_idAndVersion
+message ReadBeaconSetByObjectIdAndVersionRequest {
+    string database_url = 1;
+    string object_id = 2;
+    int32 version = 3;
+}
+message ReadBeaconSetByObjectIdAndVersionResponse {
+    BeaconSetting beaconSetting = 1;
+}
+
+// ReadBeaconSetting
+message ReadBeaconSettingRequest {
+    string database_url = 1;
+    string object_id = 2;
+    string mac = 3;
+}
+message ReadBeaconSettingResponse {
+    repeated BeaconSetting beaconSettings = 1;
+    int64 total = 2;
+}
+// >>>>>>>>>>>>>> Beacon Setting End >>>>>>>>>>>>>
+
+
+// >>>>>>>>>>>>>> Gateway >>>>>>>>>>>>>>>>>>
+message Gateway {
+    int32  id = 1;
+    string object_id = 2;
+    string name = 3;
+    string mac = 4;
+    int32  status = 5;
+    int64  last_time = 6;
+    string site = 7;
+    int64  create_at = 8;
+    int64  update_at = 9;
+}
+
+message AddGatewayRequest {
+    string database_url = 1;
+    Gateway gateway = 2;
+}
+message AddGatewayResponse {
+    Result result = 1;
+}
+
+message ReadOneGatewayRequest {
+    string database_url = 1;
+    string object_id = 2;
+    string mac = 3;
+}
+message ReadOneGatewayResponse {
+    Gateway gateway = 1;
+}
+
+message ReadAllGatewayRequest {
+    string database_url = 1;
+}
+message ReadAllGatewayResponse {
+    repeated Gateway gateways = 1;
+    int64 total = 2;
+}
+
+message ReadPagingGatewayRequest {
+    string database_url = 1;
+    string mac = 2;
+    int32 limit = 3;
+    int32 offset = 4;
+    string order = 5;
+}
+message ReadPagingGatewayResponse {
+    repeated Gateway gateways = 1;
+    int64 total = 2;
+}
+
+message DeleteGatewayRequest {
+    string database_url = 1;
+    string object_id = 2;
+    string mac = 3;
+}
+message DeleteGatewayResponse {
+    Result result = 1;
+}
+
+message UpdateGatewayRequest {
+    string database_url = 1;
+    Gateway gateway = 2;
+}
+message UpdateGatewayResponse {
+    Result result = 1;
+}
+
+message UpdateGatewayStatusRequest {
+    string database_url = 1;
+    int32 status = 2;
+    string object_id = 3;
+}
+message UpdateGatewayStatusResponse {
+    Result result = 1;
+}
+
+
+// >>>>>>>>>>>>>> Beacon >>>>>>>>>>>>>>>>>>>
+message Beacon {
+    int32 id = 1;
+	string object_id = 2;
+	string user_id = 3;
+	string mac = 4;
+    int32 status = 5;
+	string password = 6;
+	string change_password = 7;
+    int32 type = 8;
+    int32 current_version = 9;
+    int32 last_setting_version = 10;
+    int32 apply_status = 11;
+    int64 create_at = 12;
+    int64 update_at = 13;
+}
+
+// UpdateBeacon
+message UpdateBeaconRequest {
+    string database_url = 1;
+	Beacon beacon = 2;
+}
+
+message UpdateBeaconResponse{
+	Result result = 1;
+}
+// ReadPagingBeacon
+message ReadPagingBeaconRequest {
+    string database_url = 1;
+	int32 limit = 2;
+	int32 offset = 3;
+	string order = 4;
+}
+message ReadPagingBeaconResponse{
+	repeated Beacon beacons = 1;
+	int64 total = 2;
+}
+
+// AddBeacon
+message AddBeaconRequest {
+    string database_url = 1;
+	Beacon beacon = 2;
+}
+message AddBeaconResponse {
+	Result result = 1;
+}
+
+// DeleteBeacon
+message DeleteBeaconRequest {
+    string database_url = 1;
+	string object_id = 2;
+	string mac = 3;
+}
+message DeleteBeaconResponse {
+	Result result = 1;
+}
+
+// ReadOneBeacon
+message ReadOneBeaconRequest {
+    string database_url = 1;
+	string object_id = 2;
+	string mac = 3;
+}
+message ReadOneBeaconResponse {
+	Beacon beacon = 1;
+}
+
+// ReadAllBeacon
+message ReadAllBeaconRequest {
+    string database_url = 1;
+}
+message ReadAllBeaconResponse {
+	repeated Beacon beacons = 1;
+	int64 total = 2;
+}
+message UpdateBeaconApplyStatusRequest {
+    string database_url = 1;
+    string object_id = 2;
+    string mac = 3;
+}
+message UpdateBeaconApplyStatusResponse {
+    Result result = 1;
+}

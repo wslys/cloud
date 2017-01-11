@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+service StorageCacheInf {
+	rpc ReadCache(ReadCacheRequest) returns (ReadCacheResponse) {}
+	rpc AddCache(AddCacheRequest) returns (AddCacheResponse) {}
+	rpc UpdateCache(UpdateCacheRequest) returns (UpdateCacheResponse) {}
+	rpc DeleteCache(DeleteCacheRequest) returns (DeleteCacheResponse) {}
+}
+
+service LoginCacheInf {
+	rpc GetLogin(GetLoginRequest) returns (GetLoginResponse) {}
+	rpc AddLogin(AddLoginRequest) returns (AddLoginResponse) {}
+	rpc ActivateLogin(ActivateLoginRequest) returns (ActivateLoginResponse) {}
+	rpc DeleteLogin(DeleteLoginRequest) returns  (DeleteLoginResponse) {}
+	rpc Clear(ClearRequest) returns (ClearResponse) {}
+}
+
+message Token {
+	string token = 1;    // token
+	int64 created = 2;	 // unix
+	int64 updated = 3;	 // unix
+	int64 expires =4;    //uninx
+}
+message Login{
+	string userId = 1;
+	string nodeId = 2;
+	string username = 3;
+	string email = 4;
+	int64  created = 5;
+	int64  Validity = 6;
+	int64  ValidityTime = 7; //now + validity
+}
+message Login2{
+	string account = 1;
+	string userId = 2;
+	int32 nodeGrpId = 3;
+	string token = 4;
+	string clientId = 5;
+	string verifyPwd = 6;
+	int64 created = 7;
+	int64 activateWait = 8;
+	int64 activateTime = 9;
+	int64 Validity = 10;
+	int64 ValidityTime = 11; //now + validity
+	string deviceId = 12;
+}
+
+message LoginCache  {
+	string cacheCategory =1;
+	string dataOwner     =2;
+	string cachePath     =3;
+	string CacheKey      =4;
+	string CacheValue    =5;
+	int32 version        =6;
+	int64 created        =7;
+	int64 activateTime   =8;
+	int64 Validity       =9;
+	int64 ValidityTime   =10;
+}
+
+message ReadCacheRequest {
+	LoginCache cache = 1;
+}
+
+message ReadCacheResponse {
+}
+
+message AddCacheRequest{
+	LoginCache cache = 1;
+}              
+
+message AddCacheResponse {
+}
+
+message UpdateCacheRequest{
+	LoginCache cache = 1;
+}
+message  UpdateCacheResponse{
+}
+message DeleteCacheRequest {
+	LoginCache cache = 1;
+}
+message DeleteCacheResponse {
+}
+message GetLoginRequest {
+	Login login = 1;
+}
+message GetLoginResponse{
+	Token token = 1;
+	Login login = 2;
+}
+message AddLoginRequest {
+	Login login = 2;
+}
+message AddLoginResponse {
+}
+message ActivateLoginRequest{
+	Token token = 1;
+	Login login = 2;
+}
+message ActivateLoginResponse{
+	
+}
+message DeleteLoginRequest{
+	Token token = 1;
+	Login login = 2;
+}
+message DeleteLoginResponse{
+	
+}
+message ClearRequest{
+	
+}
+message ClearResponse{
+	
+}

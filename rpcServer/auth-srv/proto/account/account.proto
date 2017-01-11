@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package account;
+
+service Account {
+	rpc Read(ReadRequest) returns (ReadResponse) {}
+	rpc Create(CreateRequest) returns (CreateResponse) {}
+	rpc Update(UpdateRequest) returns (UpdateResponse) {}
+	rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+	rpc Search(SearchRequest) returns (SearchResponse) {}
+	rpc CurrentOAuth(CurrentOAuthRequest) returns (CurrentOAuthResponse) {}
+}
+
+message Record {
+	// uuid
+	string id = 1;
+	// service or user
+	string type = 2;
+	// service name, username, etc
+	string client_id = 3;
+	// we leave this blank in responses
+	// used for update and create
+	string client_secret = 4;
+	map<string,string> metadata = 5;
+	// unix timestamp
+	int64 created = 6;
+	// unix timestamp
+	int64 updated = 7;
+}
+
+message CurrentOAuthRequest {
+  string scope = 1;
+  repeated string scopes = 2;
+}
+message CurrentOAuthResponse {
+  string email = 1;
+  string user_id = 2;
+  string auth_domain = 3;
+  string user_organization = 4;
+  bool is_admin = 5;
+  string client_id = 6;
+
+  repeated string scopes = 7;
+}
+message ReadRequest {
+	string id = 1;
+}
+
+message ReadResponse {
+	Record account = 1;
+}
+
+message CreateRequest {
+	// If id is blank, one will be generated
+	Record account = 1;
+}
+
+message CreateResponse {
+}
+
+message UpdateRequest {
+	// Id and client_id cannot be changed
+	Record account = 1;
+}
+
+message UpdateResponse {
+}
+
+message DeleteRequest {
+	string id = 1;
+}
+
+message DeleteResponse {
+}
+
+message SearchRequest {
+	string client_id = 1;
+	string type = 2;
+	int64 limit = 3;
+	int64 offset = 4;
+}
+
+message SearchResponse {
+	repeated Record accounts = 1;
+}

@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+
+service loginDbInf {
+	rpc GetUserByAccount(GetUserAccountRequest) returns (GetUserAccountResponse){}
+	rpc ReadAccountRoute(ReadAccountRequest) returns (ReadAccountResponse){}	
+}
+service Account {
+	rpc Create(CreateRequest) returns (CreateResponse) {}
+	rpc Read(ReadRequest) returns (ReadResponse) {}
+	rpc Update(UpdateRequest) returns (UpdateResponse) {}
+	rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+	rpc Search(SearchRequest) returns (SearchResponse) {}
+	rpc UpdatePassword(UpdatePasswordRequest) returns (UpdatePasswordResponse) {}
+	rpc Login(LoginRequest) returns (LoginResponse) {}
+	rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+	rpc ReadSession(ReadSessionRequest) returns(ReadSessionResponse) {}
+	rpc RetrievePassword(RetrievePasswordRequest) returns(RetrievePasswordResponse) {}
+}
+
+message User {
+	string id = 1;		// uuid
+	string nodeId = 2;
+	string username = 3;	// alphanumeric user or org
+	string email = 4;
+	int64 created = 5;	// unix
+	int64 updated = 6;	// unix
+	string password = 7;
+}
+
+message Session {
+        string id = 1;
+        string username = 2;    
+        int64 created = 3;      // unix
+        int64 expires = 4;      // unix
+}
+message GetUserAccountRequest{
+	string username = 1;
+}
+message GetUserAccountResponse{
+	User user = 1;
+}
+
+message ReadAccountRequest{
+	string id = 1;
+}
+message ReadAccountResponse{
+	string id =1;
+	string nodeId=2;
+	string nodeUrl=3;
+}
+message RetrievePasswordRequest{
+	string username = 1;
+	string password = 2;
+}
+message RetrievePasswordResponse{
+}
+message CreateRequest {
+	User user = 1;
+}
+
+message CreateResponse {
+}
+
+message DeleteRequest {
+	string id = 1;
+}
+
+message DeleteResponse {
+}
+
+message ReadRequest {
+	string id = 1;
+}
+
+message ReadResponse {
+	User user = 1;
+}
+
+message UpdateRequest {
+	User user = 1;
+}
+
+message UpdateResponse {
+}
+
+message UpdatePasswordRequest {
+	string userId = 1;
+	string oldPassword = 2;
+	string newPassword = 3;
+	string confirmPassword = 4;
+}
+
+message UpdatePasswordResponse {
+}
+
+message SearchRequest {
+	string username = 1; 
+	string email = 2; 
+	int64 limit = 3;
+	int64 offset = 4;
+}
+
+message SearchResponse {
+	repeated User users = 1;
+}
+
+message ReadSessionRequest {
+        string sessionId = 1;
+}
+
+message ReadSessionResponse {
+        Session session = 1;
+}
+
+message LoginRequest {
+        string username = 1;
+        string email = 2;
+        string password = 3;
+}
+
+message LoginResponse {
+	User user = 1;
+}
+
+message LogoutRequest {
+        string sessionId = 1;
+}
+
+message LogoutResponse {
+}
+
